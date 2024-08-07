@@ -1,0 +1,32 @@
+.login-signup-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+}
+
+.navigation-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+.span-links{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+.navigation-links a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.navigation-links a:hover {
+    text-decoration: underline;
+}

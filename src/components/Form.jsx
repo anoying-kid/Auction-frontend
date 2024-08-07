@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css";
 
-function Form({ route, method }) {
+function Form({ route, method, isCelebrity }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [mobileNumber, setMobileNumber] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const name = method === 'login' ? 'Login' : 'Signup';
+    const name = method === 'login' ? 'Log In' : 'Sign Up';
 
     const handleSubmit = async (e) => {
         setLoading(true);
@@ -21,7 +21,9 @@ function Form({ route, method }) {
             const res = await api.post(route, {
                 username,
                 password,
-                mobile_number: mobileNumber});
+                ...(method 
+                    !== 'login' && { mobile_number: mobileNumber })
+            });
             if (method == "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
@@ -30,14 +32,19 @@ function Form({ route, method }) {
                 navigate('/login');
             }
         } catch (error) {
-
+            if (error.response && error.response.data) {
+                const errorMessage = error.response.data.username ? error.response.data.username[0] : error.response.data.detail ? error.response.data.detail : 'An error occurred';
+                alert(errorMessage); // Set the error message
+            } else {
+                alert('An error occurred');
+            }
         } finally {
             setLoading(false);
         }
     }
 
     return <form onSubmit={handleSubmit} className="form-container">
-        <h1>{name}</h1>
+        <h1>{isCelebrity && 'Celebrity '}{name}</h1>
         <input
             className="form-input"
             type="text"
@@ -45,7 +52,7 @@ function Form({ route, method }) {
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
         />
-        
+
         <input
             className="form-input"
             type="password"
